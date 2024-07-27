@@ -1,40 +1,19 @@
-trait Summary {
-  fn summarize(&self);
-}
+use actix_web::{middleware::Logger, App, HttpServer};
+use env_logger::Env;
 
-struct User {
-  username: String,
-  age: u8
-}
+mod database;
+mod todo;
 
-impl User {
-  fn new(username: String, age: u8) -> User {
-    User {
-      username,
-      age
-    }
-  }
-}
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    env_logger::init_from_env(Env::default().default_filter_or("info"));
 
-impl std::fmt::Display for User {
-  fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-    write!(f, "username: {username}, age: {age}", username = self.username, age = self.age)
-  }
-}
-
-impl Summary for User {
-  fn summarize(&self) {
-    println!("User: {}", self);
-  }
-}
-
-fn main() {
-  let mut user = User::new(String::from("Jean"), 18u8);
-
-  user.summarize();
-
-  user.username.push_str(" et Serge");
-
-  user.summarize();
-
+    HttpServer::new(move || {
+        App::new()
+            .wrap(Logger::default())
+            .service(todo::router::routes())
+    })
+    .bind(("127.0.0.1", 8080))?
+    .run()
+    .await
 }
