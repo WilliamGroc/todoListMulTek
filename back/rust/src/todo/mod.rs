@@ -1,4 +1,3 @@
-pub mod controller;
-pub mod models;
+mod controller;
 pub mod router;
-pub mod service;
+mod service;

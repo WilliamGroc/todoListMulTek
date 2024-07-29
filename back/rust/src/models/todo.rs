@@ -1,5 +1,6 @@
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
+use validator::Validate;
 
 #[derive(Debug, Queryable, Selectable, Serialize, Identifiable)]
 #[diesel(table_name = crate::database::schema::todo)]
@@ -13,14 +14,14 @@ pub struct Todo {
     pub updated_at: Option<chrono::NaiveDateTime>,
 }
 
-#[derive(Insertable, Debug, Deserialize)]
+#[derive(Insertable, Debug, Deserialize, Validate)]
 #[diesel(table_name = crate::database::schema::todo)]
 pub struct InsertTodo {
     pub title: String,
     pub description: String,
 }
 
-#[derive(AsChangeset, Debug, Deserialize, Default)]
+#[derive(AsChangeset, Debug, Deserialize, Default, Validate)]
 #[diesel(table_name = crate::database::schema::todo)]
 pub struct UpdateTodo {
     pub title: Option<String>,

@@ -1,10 +1,9 @@
-use crate::todo::models::{InsertTodo, Todo, UpdateTodo};
 use diesel::query_dsl::methods::FilterDsl;
 use diesel::{ExpressionMethods, PgConnection, RunQueryDsl, SelectableHelper};
 
-use super::models;
+use crate::models::todo::{InsertTodo, Todo, UpdateTodo};
 
-pub fn create_todo(conn: &mut PgConnection, data: InsertTodo) -> models::Todo {
+pub fn create_todo(conn: &mut PgConnection, data: InsertTodo) -> Todo {
     use crate::database::schema::*;
 
     diesel::insert_into(todo::table)
@@ -14,13 +13,13 @@ pub fn create_todo(conn: &mut PgConnection, data: InsertTodo) -> models::Todo {
         .expect("Error saving new todo")
 }
 
-pub fn get_todos(conn: &mut PgConnection) -> Vec<models::Todo> {
+pub fn get_todos(conn: &mut PgConnection) -> Vec<Todo> {
     use crate::database::schema::todo::dsl::*;
 
     todo.load::<Todo>(conn).expect("Error loading todos")
 }
 
-pub fn get_todo_by_id(conn: &mut PgConnection, id: i32) -> models::Todo {
+pub fn get_todo_by_id(conn: &mut PgConnection, id: i32) -> Todo {
     use crate::database::schema::*;
 
     todo::dsl::todo
@@ -29,7 +28,7 @@ pub fn get_todo_by_id(conn: &mut PgConnection, id: i32) -> models::Todo {
         .expect("Error loading todo by id")
 }
 
-pub fn update_todo(conn: &mut PgConnection, data: UpdateTodo, id: i32) -> models::Todo {
+pub fn update_todo(conn: &mut PgConnection, data: UpdateTodo, id: i32) -> Todo {
     use crate::database::schema::*;
 
     let updated_data = UpdateTodo {

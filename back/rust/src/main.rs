@@ -3,6 +3,7 @@ use env_logger::Env;
 
 mod database;
 mod todo;
+mod models;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
