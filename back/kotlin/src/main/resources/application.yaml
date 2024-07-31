@@ -1,12 +1,12 @@
 ktor:
     application:
         modules:
-            - example.com.ApplicationKt.module
+            - multek.com.ApplicationKt.main
     deployment:
         port: 8080
     development: true
 postgres:
-    url: jdbc:postgresql://localhost:5432/todolist
+    url: "jdbc:postgresql://localhost:5432/todolist"
     user: postgres
     password: postgres
 
